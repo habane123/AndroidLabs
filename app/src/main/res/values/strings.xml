@@ -1,5 +1,15 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">AndroidLabs</string>
     <string name="hello_message">Hello World!</string>
     <string name="ButtonText">I\'m a button</string>
+    <string name="ClickText">Click here</string>
+    <string name="CheckBoxText">Check this out!</string>
+    <string name="SwitchText">Switch on/off</string>
+    <string name="EditText">Type here</string>
+    <string name="TextViewText">Look at my GUI</string>
+    <string name="Toast_message">Here is more information</string>
+    <string name="Snackbar_message1">The switch is now on</string>
+    <string name="Snackbar_message2">The switch is now off</string>
+    <string name="Checkbox_message1">The checkbox is now on</string>
+    <string name="Checkbox_message2">The checkbox is now off</string>
 </resources>
