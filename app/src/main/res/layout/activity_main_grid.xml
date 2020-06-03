@@ -56,7 +56,7 @@
         android:layout_row="3"
         android:layout_column="0"
         android:hint="@string/EditText"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textCapWords"
         android:id="@+id/myEditText"/>
 
 </GridLayout>
