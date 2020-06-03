@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_relative);
-
         Button myButton = findViewById(R.id.myButton);
         String toastMessage = MainActivity.this.getResources().getString(R.string.Toast_message);
         myButton.setOnClickListener(btn -> Toast.makeText(MainActivity.this,toastMessage,Toast.LENGTH_LONG).show());
