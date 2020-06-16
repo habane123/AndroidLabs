@@ -13,4 +13,15 @@
     <string name="Snackbar_message2">L\interrupteur est maintenant éteint</string>
     <string name="Checkbox_message1">La case à cocher est maintenant activée</string>
     <string name="Checkbox_message2">La case à cocher est maintenant désactivée</string>
+    <string name="TextViewLab3">Entrez votre adresse email:</string>
+    <string name="EditText1_Lab3">Saisissez votre e-mail ici</string>
+    <string name="EditText2_Lab3">Tapez votre mot de passe:</string>
+    <string name="ButtonText_Lab3">S\identifier</string>
+    <string name="YourProfile">Votre profil</string>
+    <string name="YourName">Votre nom:</string>
+    <string name="YourEmail">Votre email:</string>
+    <string name="YourPic">Ta photo:</string>
+    <string name="EnterYourName">Entrez votre nom:</string>
+    <string name="EnterYourEmail">Entrez votre email:</string>
+    <string name="ClickPicAbove">Cliquez sur le bouton ci-dessus pour prendre une photo</string>
 </resources>

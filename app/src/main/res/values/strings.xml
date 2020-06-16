@@ -12,4 +12,15 @@
     <string name="Snackbar_message2">The switch is now off</string>
     <string name="Checkbox_message1">The checkbox is now on</string>
     <string name="Checkbox_message2">The checkbox is now off</string>
+    <string name="TextViewLab3">Enter your email address:</string>
+    <string name="EditText1_Lab3">Type email here</string>
+    <string name="EditText2_Lab3">Type your password:</string>
+    <string name="ButtonText_Lab3">Login</string>
+    <string name="YourProfile">Your profile</string>
+    <string name="YourName">Your name:</string>
+    <string name="YourEmail">Your email:</string>
+    <string name="YourPic">Your picture:</string>
+    <string name="EnterYourName">"Enter your name:</string>
+    <string name="EnterYourEmail">Enter your email:</string>
+    <string name="ClickPicAbove">Click the button above to take a picture</string>
 </resources>
