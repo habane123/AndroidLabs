@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -18,6 +20,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton mImageButton;
     String email;
     EditText emailAddress;
+    Button lab4Btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,15 @@ public class ProfileActivity extends AppCompatActivity {
         mImageButton.setOnClickListener(v ->  dispatchTakePictureIntent());
         emailAddress = findViewById(R.id.emailAddress);
         emailAddress.setText(email);
+
+        lab4Btn = findViewById(R.id.lab4Button);
+        lab4Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileActivity.this, ChatRoomActivity.class));
+            }
+        });
+
     }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
