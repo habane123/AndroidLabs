@@ -24,4 +24,7 @@
     <string name="EnterYourName">Entrez votre nom:</string>
     <string name="EnterYourEmail">Entrez votre email:</string>
     <string name="ClickPicAbove">Cliquez sur le bouton ci-dessus pour prendre une photo</string>
+    <string name="lab4button">aller discuter</string>
+    <string name="SendButton">envoyer</string>
+    <string name="ReceiveButton">recevoir</string>
 </resources>

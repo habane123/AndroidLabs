@@ -3,8 +3,12 @@ package com.example.androidlabs;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +38,14 @@ public class ChatRoomActivity extends AppCompatActivity {
     Context context;
     MyListAdapter myAdapter;
 
+    MyOpener myOpener;
+    SQLiteDatabase db;
+    ContentValues cv;
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +57,49 @@ public class ChatRoomActivity extends AppCompatActivity {
         sendBtn = (Button)findViewById(R.id.sendButton);
         rcvBtn = (Button)findViewById(R.id.receiveButton);
 
+
+        myOpener = new MyOpener(this);
+        db = myOpener.getWritableDatabase();
+        cv = new ContentValues();
+
+
+
+        loadDataFromDatabase();
+
+
+
+
+
         sendBtn.setOnClickListener( v -> {
             String message = editT.getText().toString();
-            Message msg = new Message(message,true);
+            ContentValues cv = new ContentValues();
+            cv.put(myOpener.COL_MESSAGE,message);
+            cv.put(myOpener.COL_ISSENDORRECEIVE,1);
+            long newId = db.insert(myOpener.TABLE_NAME,null,cv);
+            Message msg = new Message(message, true,newId);
             messageList.add(msg);
             editT.setText("");
-            MyListAdapter mladptr = new MyListAdapter(messageList,getApplicationContext());
-            listV.setAdapter(mladptr);
+                MyListAdapter mladptr = new MyListAdapter(messageList, getApplicationContext());
+                listV.setAdapter(mladptr);
+
+
+
+
         });
 
         rcvBtn.setOnClickListener( v -> {
             String message = editT.getText().toString();
-            Message msg = new Message(message,false);
+            ContentValues cv = new ContentValues();
+            cv.put(myOpener.COL_MESSAGE,message);
+            cv.put(myOpener.COL_ISSENDORRECEIVE,0);
+            long newId = db.insert(myOpener.TABLE_NAME,null,cv);
+            Message msg = new Message(message, false,newId);//, newId);
             messageList.add(msg);
             editT.setText("");
-            MyListAdapter mladptr = new MyListAdapter(messageList,getApplicationContext());
-            listV.setAdapter(mladptr);
+                MyListAdapter mladptr = new MyListAdapter(messageList, getApplicationContext());
+                listV.setAdapter(mladptr);
+
+
         });
 
         listV.setAdapter( myAdapter = new MyListAdapter(messageList,getApplicationContext()));
@@ -88,8 +127,31 @@ public class ChatRoomActivity extends AppCompatActivity {
             return true;
             });
 
+    }
+
+    private void loadDataFromDatabase(){
+
+        String [] columns = {myOpener.COL_ID,myOpener.COL_ISSENDORRECEIVE,myOpener.COL_MESSAGE};
+        Cursor results = db.query(false,myOpener.TABLE_NAME,columns, null,null,null,null,null,null);
+
+        int idColumnIndex = results.getColumnIndex(myOpener.COL_ID);
+        int sendOrReceiveColumnIndex = results.getColumnIndex(myOpener.COL_ISSENDORRECEIVE);
+        int messageColumnIndex = results.getColumnIndex(myOpener.COL_MESSAGE);
+
+        while(results.moveToNext()){
+            long id = results.getLong(idColumnIndex);
+            boolean isSendOrReceive = results.getString(sendOrReceiveColumnIndex).equals("1");
+            String message = results.getString(messageColumnIndex);
+
+            messageList.add(new Message(message,isSendOrReceive,id));
+
+        }
+
+        results.moveToFirst();
+        myOpener.printCursor(results, db.getVersion());
 
     }
+
 
 
     public class MyListAdapter extends BaseAdapter{
@@ -112,13 +174,13 @@ public class ChatRoomActivity extends AppCompatActivity {
             }
 
             @Override
-            public Object getItem(int position) {
+            public Message getItem(int position) {
                 return msg.get(position);
             }
 
             @Override
             public long getItemId(int position) {
-                return (long) position;
+                return (long) getItem(position).getMessageID();
             }
 
             @Override
