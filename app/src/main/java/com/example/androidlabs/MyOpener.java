@@ -57,15 +57,19 @@ public class MyOpener extends SQLiteOpenHelper {
 
         }
         Log.wtf("DB Version", version+", No of columns: "+c.getColumnCount()+
-                " Names of columes: "+columnNames);
+                " Names of columns: "+columnNames);
         Log.wtf("No of rows: ", c.getCount()+"");
         Log.wtf("Rows in the cursors", "");
         int counter = 1;
-        while (c.moveToNext()){
-            Log.wtf("Row "+counter+":", c.getLong(0)+", "+c.getString(1)+", "+c.getString(2) );
+
+        while (!c.isLast()){
+            Log.wtf("Row "+counter, c.getLong(0)+", "+c.getString(1)+", "+c.getString(2) );
             counter++;
-            //c.moveToNext();
+            c.moveToNext();
         }
+        Log.wtf("Row "+counter, c.getLong(0)+", "+c.getString(1)+", "+c.getString(2) );
+
+
     }
 
 

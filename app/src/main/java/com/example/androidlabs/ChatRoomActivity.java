@@ -112,9 +112,11 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             adb.setPositiveButton("OK",(click,arg)->  {
 
+
                     Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
-                    messageList.remove(position);
-                    myAdapter.notifyDataSetChanged();
+                    Message m = messageList.remove(position);
+                    deleteMessage(m) ;
+            myAdapter.notifyDataSetChanged();
                  });
 
             adb.setNegativeButton("Cancel", (click,arg)->   {
@@ -126,6 +128,11 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             return true;
             });
+
+    }
+
+    private void deleteMessage(Message m) {
+        db.execSQL("delete from "+MyOpener.TABLE_NAME+" where "+MyOpener.COL_ID+"="+m.messageID);
 
     }
 
@@ -148,6 +155,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         }
 
         results.moveToFirst();
+        //results.move
         myOpener.printCursor(results, db.getVersion());
 
     }
