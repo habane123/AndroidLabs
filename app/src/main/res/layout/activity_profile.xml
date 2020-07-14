@@ -61,7 +61,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/lab4Button"
             android:text="@string/lab4button">
-
+        </Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/WeatherButton"
+            android:text="Weather Forecast">
         </Button>
 
 

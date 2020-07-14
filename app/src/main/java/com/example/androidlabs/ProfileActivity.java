@@ -21,6 +21,7 @@ public class ProfileActivity extends AppCompatActivity {
     String email;
     EditText emailAddress;
     Button lab4Btn;
+    Button weatherBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,15 @@ public class ProfileActivity extends AppCompatActivity {
         emailAddress.setText(email);
 
         lab4Btn = findViewById(R.id.lab4Button);
+        weatherBtn = findViewById(R.id.WeatherButton);
+
+        weatherBtn.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v){
+                    startActivity(new Intent(ProfileActivity.this, WeatherForecast.class));
+                }
+        });
+
+
         lab4Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
