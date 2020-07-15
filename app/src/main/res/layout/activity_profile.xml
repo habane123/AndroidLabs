@@ -30,6 +30,9 @@
         <EditText
             android:id="@+id/personName"
             android:nextFocusDown="@id/emailAddress"
+            android:nextFocusUp="@id/personName"
+            android:nextFocusRight="@id/lab4Button"
+            android:nextFocusLeft="@id/WeatherButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/EnterYourName"
@@ -42,6 +45,7 @@
         <EditText
             android:id="@+id/emailAddress"
             android:nextFocusDown="@id/WeatherButton"
+            android:nextFocusUp="@id/emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/EnterYourEmail"
