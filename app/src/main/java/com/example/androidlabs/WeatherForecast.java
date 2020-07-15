@@ -48,8 +48,6 @@ public class WeatherForecast extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... args) {
-            HttpURLConnection connection = null;
-            String fileName = iconName + ".png";
 
             try {
                 String url = args[0];
@@ -59,6 +57,11 @@ public class WeatherForecast extends AppCompatActivity {
 
                 //open the connection
                 HttpURLConnection urlConnection = (HttpURLConnection) url1.openConnection();
+
+                urlConnection.setReadTimeout(10000);
+                urlConnection.setConnectTimeout(15000);
+                urlConnection.setRequestMethod("GET");
+                urlConnection.setDoInput(true);
 
                 //wait for data:
                 InputStream response = urlConnection.getInputStream();
@@ -71,64 +74,55 @@ public class WeatherForecast extends AppCompatActivity {
 
                 while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
                     if (xpp.getEventType() == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equals("Temperature")) {
-                            String tempValue = xpp.getAttributeValue(null, "value");
+                        if (xpp.getName().equals("temperature")) {
+                            currentTemp = xpp.getAttributeValue(null, "value");
+                            Log.e("AsyncTask", "Found value message: " + currentTemp);
                             publishProgress(25);
                             min = xpp.getAttributeValue(null, "min");
                             publishProgress(50);
                             max = xpp.getAttributeValue(null, "max");
                             publishProgress(75);
-                        }
-                    } else if (xpp.getName().equals("Weather")) {
-                        iconName = xpp.getAttributeValue(null, "icon");
-                        fileName = iconName + ".png";
 
-                        if (fileExistance(fileName)) {
+                        } else if (xpp.getName().equals("weather")) {
+                            iconName = xpp.getAttributeValue(null, "icon");
+                            String fileName = iconName + ".png";
 
-                            FileInputStream fis = null;
-                            try {
-                                fis = new FileInputStream(getBaseContext().getFileStreamPath(fileName));
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
+                            if (fileExistance(fileName)) {
+
+                                FileInputStream fis = null;
+                                try {
+                                    fis = new FileInputStream(getBaseContext().getFileStreamPath(fileName));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                                currentWeather = BitmapFactory.decodeStream(fis);
+
+                            } else {
+                                currentWeather = HTTPUtils.getImage(IMAGE_URL + fileName);
+                                FileOutputStream outputStream = null;
+                                try {
+                                    outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+                                    currentWeather.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+                                    outputStream.flush();
+                                    outputStream.close();
+                                } catch (Exception e) {
+                                    Log.e("AsyncTask", "Error");
+                                }
+
                             }
-                            currentWeather = BitmapFactory.decodeStream(fis);
+                            publishProgress(100);
                         }
-                    }else {
-                        currentWeather  = HTTPUtils.getImage(IMAGE_URL+fileName);
-                        FileOutputStream outputStream = null;
-                        try {
-                            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
-                            currentWeather.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
-                            outputStream.flush();
-                            outputStream.close();
-                        } catch (Exception e) {
-                            Log.e("AsyncTask", "Error");
-                        }
-                        try {
 
-                            Bitmap image = null;
-
-                            connection = (HttpURLConnection) url1.openConnection();
-                            connection.connect();
-                            int responseCode = connection.getResponseCode();
-                            if (responseCode == 200) {
-                                image = BitmapFactory.decodeStream(connection.getInputStream());
-                            } else
-                                return null;
-                        } catch (Exception e) {
-                            return null;
-                        } finally {
-                            if (connection != null) {
-                                connection.disconnect();
-                            }
-                        }
                     }
-                    publishProgress(100);
+                    xpp.next();
                 }
 
 
 
-
+                //Create network conection for uv url:
+                URL urlUV = new URL("http://api.openweathermap.org/data/2.5/uvi?appid=7e943c97096a9784391a981c4d878b22&lat=45.348945&lon=-75.759389");
+                HttpURLConnection UVConnection = (HttpURLConnection) urlUV.openConnection();
+                response = UVConnection.getInputStream();
 
                 //Build the entire string response:
                 BufferedReader reader = new BufferedReader(new InputStreamReader(response, "UTF-8"), 8);
@@ -162,9 +156,9 @@ return "Done";
 
         @Override
         protected void onPostExecute(String s) {
+            currentTemperature.setText("Current temperature: "+currentTemp+ "°C");
             minTemperature.setText("Minimum temperature: "+min+ "°C");
             maxTemperature.setText("Maximum temperature: "+max+ "°C");
-            currentTemperature.setText("Current temperature: "+currentTemp+ "°C");
             uv.setText("UV Rating: " + uvRating);
             weatherTemp.setImageBitmap(currentWeather);
 

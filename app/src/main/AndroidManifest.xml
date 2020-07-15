@@ -3,7 +3,8 @@
     package="com.example.androidlabs">
 
     <uses-feature
-        android:name="android.hardware.camera"
+
+        android:name="android.hardware.type.watch"
         android:required="true" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -13,7 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WeatherForecast"></activity>
+        <activity android:name=".WeatherForecast">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity android:name=".ChatRoomActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
